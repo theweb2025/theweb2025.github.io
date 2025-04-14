@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>password login</title>
+    <title>Password Login</title>
     <style>
         body {
             background-color: #1b0025;
-            font-family: 'Roboto Mono', monospace; /* Changed font */
+            font-family: 'Roboto Mono', monospace;
             display: flex;
+            flex-direction: column; /* Stack elements vertically */
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             color: white;
+            text-align: center; /* Center text within the body */
         }
 
         .container {
             text-align: center;
+            margin-bottom: 20px; /* Add some space below the license */
         }
 
         h1 {
@@ -26,16 +29,84 @@
             text-transform: lowercase;
         }
 
+        .license {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            text-align: left;
+            max-width: 600px;
+        }
+
+        .license h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .license p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .license a {
+            color: #ddd;
+            text-decoration: underline;
+        }
+
+        .agreement {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .agreement input[type="checkbox"] {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            appearance: none;
+            background-color: transparent;
+            border: 2px solid white;
+            border-radius: 3px;
+            cursor: pointer;
+            outline: none;
+            font-family: 'Roboto Mono', monospace; /* Inherit font */
+        }
+
+        .agreement input[type="checkbox"]:checked {
+            background-color: white;
+            border-color: white;
+            /* Add a checkmark or visual indicator */
+            position: relative;
+        }
+
+        .agreement input[type="checkbox"]:checked::before {
+            content: '\2713'; /* Unicode checkmark */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #1b0025;
+            font-size: 1rem;
+        }
+
+        .agreement label {
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
         input[type="password"], input[type="text"] {
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Reduced margin */
             font-size: 1rem;
             border: 2px solid white;
             border-radius: 5px;
             color: white;
             background-color: transparent;
             outline: none;
-            font-family: 'Roboto Mono', monospace; /* Ensure input fields also use the font */
+            font-family: 'Roboto Mono', monospace;
         }
 
         input[type="password"]:focus, input[type="text"]:focus {
@@ -51,7 +122,7 @@
             cursor: pointer;
             border-radius: 5px;
             outline: none;
-            font-family: 'Roboto Mono', monospace; /* Ensure button also uses the font */
+            font-family: 'Roboto Mono', monospace;
         }
 
         button:hover {
@@ -65,7 +136,7 @@
             font-weight: bold;
             color: white;
             animation: fadeInZoom 2s forwards;
-            font-family: 'Roboto Mono', monospace; /* Ensure welcome message also uses the font */
+            font-family: 'Roboto Mono', monospace;
         }
 
         @keyframes fadeInZoom {
@@ -78,6 +149,11 @@
                 transform: scale(1);
             }
         }
+
+        /* Disable input and button initially */
+        #password, button {
+            display: none;
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,33 +161,75 @@
 </head>
 <body>
 
-<div class="container">
-    <h1>the web sign in</h1>
-    <input type="password" id="password" placeholder="enter password">
-    <br>
-    <button onclick="checkPassword()">confirm</button>
-    <div id="welcomeMessage" class="welcome-message">welcome!</div>
-</div>
+    <div class="license">
+        <h2>Apache License 2.0</h2>
+        <p>Version 2.0, January 2004</p>
+        <p><a href="http://www.apache.org/licenses/" target="_blank">http://www.apache.org/licenses/</a></p>
+        <p>TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION</p>
+        <ol>
+            <li>... (rest of the Apache 2.0 license text - you might want to include a more concise version or a link) ...</li>
+        </ol>
+    </div>
 
-<script>
-    function checkPassword() {
-        var password = document.getElementById("password").value;
-        var correctPassword = "theweb25!";
+    <div class="agreement">
+        <input type="checkbox" id="agreeLicense">
+        <label for="agreeLicense">I agree to the terms and conditions</label>
+    </div>
 
-        if (password === correctPassword) {
-            document.querySelector('h1').style.display = 'none';
-            document.querySelector('input[type="password"]').style.display = 'none';
-            document.querySelector('button').style.display = 'none';
-            var welcomeMessage = document.getElementById("welcomeMessage");
-            welcomeMessage.style.display = 'block';
-            setTimeout(function() {
-                window.location.href = "https://tinyurl.com/youareNOTgettingthelinkbucko";
-            }, 2000);
-        } else {
-            alert("incorrect password! please try again.");
+    <div class="container">
+        <h1>the web sign in</h1>
+        <input type="password" id="password" placeholder="enter password">
+        <br>
+        <button onclick="checkPassword()" disabled>confirm</button>
+        <div id="welcomeMessage" class="welcome-message">welcome!</div>
+    </div>
+
+    <script>
+        const agreeCheckbox = document.getElementById('agreeLicense');
+        const passwordInput = document.getElementById('password');
+        const confirmButton = document.querySelector('button');
+        const licenseDiv = document.querySelector('.license');
+        const agreementDiv = document.querySelector('.agreement');
+        const containerDiv = document.querySelector('.container');
+
+        agreeCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                passwordInput.style.display = 'block';
+                confirmButton.style.display = 'block';
+                confirmButton.removeAttribute('disabled');
+                licenseDiv.style.display = 'none';
+                agreementDiv.style.display = 'none';
+                containerDiv.style.display = 'flex'; /* Adjust container to be visible */
+                containerDiv.flexDirection = 'column';
+                containerDiv.alignItems = 'center';
+            } else {
+                passwordInput.style.display = 'none';
+                confirmButton.style.display = 'none';
+                confirmButton.setAttribute('disabled', 'true');
+                licenseDiv.style.display = 'block';
+                agreementDiv.style.display = 'flex';
+                containerDiv.style.display = 'none';
+            }
+        });
+
+        function checkPassword() {
+            var password = document.getElementById("password").value;
+            var correctPassword = "theweb25!";
+
+            if (password === correctPassword) {
+                document.querySelector('h1').style.display = 'none';
+                document.querySelector('input[type="password"]').style.display = 'none';
+                document.querySelector('button').style.display = 'none';
+                var welcomeMessage = document.getElementById("welcomeMessage");
+                welcomeMessage.style.display = 'block';
+                setTimeout(function() {
+                    window.location.href = "https://tinyurl.com/youareNOTgettingthelinkbucko";
+                }, 2000);
+            } else {
+                alert("incorrect password! please try again.");
+            }
         }
-    }
-</script>
+    </script>
 
 </body>
 </html>
