@@ -7,7 +7,7 @@
     <style>
         body {
             background-color: #1b0025;
-            font-family: 'Lexend', sans-serif;
+            font-family: 'Roboto Mono', monospace; /* Changed font */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -35,6 +35,7 @@
             color: white;
             background-color: transparent;
             outline: none;
+            font-family: 'Roboto Mono', monospace; /* Ensure input fields also use the font */
         }
 
         input[type="password"]:focus, input[type="text"]:focus {
@@ -50,6 +51,7 @@
             cursor: pointer;
             border-radius: 5px;
             outline: none;
+            font-family: 'Roboto Mono', monospace; /* Ensure button also uses the font */
         }
 
         button:hover {
@@ -63,6 +65,7 @@
             font-weight: bold;
             color: white;
             animation: fadeInZoom 2s forwards;
+            font-family: 'Roboto Mono', monospace; /* Ensure welcome message also uses the font */
         }
 
         @keyframes fadeInZoom {
@@ -76,6 +79,9 @@
             }
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -84,28 +90,10 @@
     <input type="password" id="password" placeholder="enter password">
     <br>
     <button onclick="checkPassword()">confirm</button>
-    <div id="captchaContainer" style="display:none;">
-        <p>solve the captcha:</p>
-        <span id="captchaQuestion"></span>
-        <br>
-        <input type="text" id="captchaAnswer" placeholder="enter answer">
-        <br>
-        <button onclick="checkCaptcha()">submit captcha</button>
-    </div>
     <div id="welcomeMessage" class="welcome-message">welcome!</div>
 </div>
 
 <script>
-    var captchaAnswer;
-
-    function generateCaptcha() {
-        var num1 = Math.floor(Math.random() * 10);
-        var num2 = Math.floor(Math.random() * 10);
-        captchaAnswer = num1 + num2;
-        document.getElementById("captchaQuestion").innerText = `${num1} + ${num2} = ?`;
-        document.getElementById("captchaContainer").style.display = "block";
-    }
-
     function checkPassword() {
         var password = document.getElementById("password").value;
         var correctPassword = "theweb25!";
@@ -114,24 +102,13 @@
             document.querySelector('h1').style.display = 'none';
             document.querySelector('input[type="password"]').style.display = 'none';
             document.querySelector('button').style.display = 'none';
-            generateCaptcha();
-        } else {
-            alert("incorrect password! please try again.");
-        }
-    }
-
-    function checkCaptcha() {
-        var captchaInput = document.getElementById("captchaAnswer").value;
-
-        if (parseInt(captchaInput) === captchaAnswer) {
-            document.getElementById("captchaContainer").style.display = "none";
             var welcomeMessage = document.getElementById("welcomeMessage");
             welcomeMessage.style.display = 'block';
             setTimeout(function() {
                 window.location.href = "https://tinyurl.com/youareNOTgettingthelinkbucko";
             }, 2000);
         } else {
-            alert("incorrect captcha! please try again.");
+            alert("incorrect password! please try again.");
         }
     }
 </script>
